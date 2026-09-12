@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Donation Link Setup — Foundation Site Template</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0B1E4B;--navy-deep:#06132F;--red:#C8102E;--green:#1B7F4C;
+  --paper:#FBFAF7;--sand:#F4F1EA;--ink:#16233F;--muted:#5B6B87;--line:#DFE3EA;
+  --display:'Playfair Display',Georgia,serif;
+  --body:'Montserrat',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.65;font-size:16px}
+.bar{height:4px;background:linear-gradient(90deg,var(--navy) 50%,var(--red) 50%)}
+.wrap{max-width:760px;margin:0 auto;padding:38px 20px 70px}
+h1{font-family:var(--display);font-size:clamp(27px,4.6vw,38px);color:var(--navy);line-height:1.15;margin-bottom:10px}
+.sub{color:var(--muted);font-size:.96rem;max-width:60ch}
+.card{background:#fff;border:1px solid var(--line);border-radius:3px;padding:26px;margin-top:24px}
+h2{font-family:var(--display);font-size:1.25rem;color:var(--navy);margin-bottom:14px}
+ol{margin:0 0 0 20px;display:grid;gap:9px}
+ol li{font-size:.94rem;color:var(--muted)}
+ol li b{color:var(--ink)}
+label{display:block;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:700;color:var(--muted);margin-bottom:8px}
+input[type=url],input[type=text]{
+  width:100%;padding:14px;border:1.5px solid var(--line);border-radius:3px;
+  font-family:var(--mono);font-size:.92rem;background:var(--paper);
+}
+input:focus{outline:none;border-color:var(--navy)}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:#fff;
+  font-weight:600;font-size:.9rem;padding:13px 22px;border:none;border-radius:3px;cursor:pointer;
+}
+.btn:hover{background:var(--navy-deep)}
+.btn.red{background:var(--red)}
+.btn.ghost{background:none;color:var(--navy);border:1.5px solid var(--line)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.verdict{margin-top:16px;border-radius:3px;padding:15px 17px;font-size:.92rem;display:none;line-height:1.6}
+.verdict.ok{background:#E9F6EF;border:1px solid #BFE3D0;color:#0E5C36;display:block}
+.verdict.warn{background:#FFF6E2;border:1px solid #F0DCA8;color:#7A5A08;display:block}
+.verdict.bad{background:#FDECEF;border:1px solid #F4C7CF;color:#8E0D22;display:block}
+.verdict b{display:block;margin-bottom:4px}
+pre{
+  background:var(--navy-deep);color:#E7EDF7;padding:17px;border-radius:3px;
+  font-family:var(--mono);font-size:.84rem;overflow-x:auto;margin-top:14px;line-height:1.6;
+}
+pre .s{color:#9BD4A8}
+.preview{
+  margin-top:16px;border:1px dashed var(--line);border-radius:3px;padding:22px;
+  display:flex;flex-direction:column;align-items:flex-start;gap:10px;background:var(--sand);
+}
+.btn-donate{
+  display:inline-flex;align-items:center;justify-content:center;background:var(--red);
+  color:#fff;font-weight:600;font-size:.9rem;padding:14px 28px;border-radius:2px;
+  text-decoration:none;
+}
+.btn-donate.is-unset{background:var(--line);color:var(--muted);cursor:not-allowed}
+.note{font-size:.8rem;color:var(--muted)}
+.hint{font-size:.86rem;color:var(--muted);margin-top:10px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sand);padding:2px 6px;border-radius:2px}
+.foot{margin-top:34px;font-size:.84rem;color:var(--muted);border-top:1px solid var(--line);padding-top:20px}
+</style>
+</head>
+<body>
+<div class="bar"></div>
+<div class="wrap">
+
+  <h1>Donation link setup</h1>
+  <p class="sub">
+    Paste the Clover Payment Link below. This page checks it, shows you exactly what the
+    Donate button will do, and writes out the one line to put in the site’s config file.
+    Nothing here is saved to a server — it is a helper, not an admin panel.
+  </p>
+
+  <div class="card">
+    <h2>1. Get the link from Clover</h2>
+    <ol>
+      <li>Sign in to the <b>Clover dashboard</b>.</li>
+      <li>Open <b>Ecommerce</b>, then <b>Payment links</b>.</li>
+      <li>Choose <b>Create new</b>, then <b>URL</b>.</li>
+      <li>Give it an internal name, for example <code>Website donation</code>.</li>
+      <li>Choose <b>Variable</b> so the donor types their own amount. (<b>Preset</b> fixes a single amount — not what a donation page wants.)</li>
+      <li>Save it, then <b>Copy URL</b>.</li>
+    </ol>
+    <p class="hint">
+      If Payment links is not in the menu, Ecommerce is probably not switched on for the
+      account — that is a call to Clover support, not something the website can fix.
+      Clover online payments are available in the United States and Canada.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>2. Paste it here</h2>
+    <label for="url">Clover Payment Link</label>
+    <input type="url" id="url" placeholder="https://..." autocomplete="off" spellcheck="false">
+    <div class="row">
+      <button class="btn" id="checkBtn">Check this link</button>
+      <button class="btn ghost" id="openBtn">Open it in a new tab</button>
+    </div>
+    <div class="verdict" id="verdict"></div>
+
+    <div class="preview" id="preview" style="display:none">
+      <span class="note">This is exactly what a visitor will see and do:</span>
+      <a class="btn-donate" id="demoBtn" target="_blank" rel="noopener noreferrer">Donate Now</a>
+      <span class="note" id="demoNote"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>3. Put it in the site</h2>
+    <p class="sub" style="margin-bottom:4px">
+      Open <code>assets/site-config.js</code> and replace the <code>DONATE_URL</code> line with
+      the line below. That is the only edit — every Donate button on the site reads from it.
+    </p>
+    <pre id="snippet">  DONATE_URL: <span class="s">""</span>,</pre>
+    <div class="row">
+      <button class="btn red" id="copyBtn">Copy this line</button>
+      <span class="note" id="copyNote"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>4. Before going live</h2>
+    <ol>
+      <li>Reload the site and check the Donate button in the <b>header</b>, the <b>hero</b>, the <b>donation section</b> and the <b>footer</b>.</li>
+      <li>Click one. It must open Clover <b>in a new tab</b>, showing the foundation’s name.</li>
+      <li>Make <b>one real donation of a small amount</b> and confirm it appears in Clover’s Transactions. A link that looks right and does not settle is the failure worth catching before launch, not after.</li>
+      <li>Refund that test donation from the Clover dashboard.</li>
+    </ol>
+  </div>
+
+  <p class="foot">
+    Reusing this template for another organisation: copy the site folder, replace
+    <code>assets/logo.jpg</code>, and edit <code>assets/site-config.js</code> — name,
+    contact details, figures and this donation link. No other file is touched, and
+    <code>assets/donate.js</code> is never edited.
+  </p>
+</div>
+
+<script src="assets/site-config.js"></script>
+<script src="assets/donate.js"></script>
+<script>
+/* This page checks a pasted link with DonateModule - the very same code the
+   live site uses to decide whether to switch the buttons on. A second
+   implementation here would only ever prove what this page believes. */
+(function () {
+  'use strict';
+  var urlEl = document.getElementById('url');
+  var verdict = document.getElementById('verdict');
+  var preview = document.getElementById('preview');
+  var demoBtn = document.getElementById('demoBtn');
+  var demoNote = document.getElementById('demoNote');
+  var snippet = document.getElementById('snippet');
+
+  /* Pre-fill from the config if it is already set, so opening this page on a
+     configured site shows the current link rather than an empty box. */
+  if (window.DonateModule && DonateModule.url()) urlEl.value = DonateModule.url();
+
+  function jsString(s) {
+    return '"' + String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+    });
+  }
+
+  function show(kind, title, body) {
+    verdict.className = 'verdict ' + kind;
+    verdict.innerHTML = '<b>' + esc(title) + '</b>' + esc(body);
+  }
+
+  function check() {
+    var v = urlEl.value.trim();
+    preview.style.display = 'none';
+
+    if (!v) {
+      show('bad', 'Nothing pasted yet',
+           'Copy the URL from Clover and paste it into the box above.');
+      snippet.innerHTML = '  DONATE_URL: <span class="s">""</span>,';
+      return;
+    }
+
+    if (!DonateModule.isUsable(v)) {
+      var why = /^http:\/\//i.test(v)
+        ? 'This link starts with http:// rather than https://. A donation page is where somebody types a card number, so the site will refuse to open it.'
+        : 'That is not a valid web address. Paste the whole URL, starting with https://';
+      show('bad', 'This link will not be used', why);
+      snippet.innerHTML = '  DONATE_URL: <span class="s">""</span>,';
+      return;
+    }
+
+    if (!DonateModule.looksLikeClover(v)) {
+      show('warn', 'Usable, but it is not a clover.com address',
+           'That is perfectly fine if the foundation uses its own domain for checkout. ' +
+           'If you did not expect that, check you copied the Payment Link and not some other page.');
+    } else {
+      show('ok', 'This link is good',
+           'It is a secure Clover address. The Donate buttons will switch on and open it in a new tab.');
+    }
+
+    demoBtn.href = v;
+    demoNote.textContent = 'Opens ' + new URL(v).hostname + ' in a new tab.';
+    preview.style.display = 'flex';
+    snippet.innerHTML = '  DONATE_URL: <span class="s">' + esc(jsString(v)) + '</span>,';
+  }
+
+  document.getElementById('checkBtn').addEventListener('click', check);
+  urlEl.addEventListener('input', check);
+  urlEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') check(); });
+
+  document.getElementById('openBtn').addEventListener('click', function () {
+    var v = urlEl.value.trim();
+    if (!DonateModule.isUsable(v)) { check(); return; }
+    window.open(v, '_blank', 'noopener,noreferrer');
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    var note = document.getElementById('copyNote');
+    var text = snippet.textContent;
+    function done(msg) { note.textContent = msg; setTimeout(function () { note.textContent = ''; }, 2600); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done('Copied.'); })
+        .catch(function () { done('Could not copy — select the line and copy it by hand.'); });
+    } else {
+      done('Select the line above and copy it by hand.');
+    }
+  });
+
+  check();
+})();
+</script>
+</body>
+</html>
